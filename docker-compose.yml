@@ -1,13 +1,17 @@
 services:
   nginx:
     container_name: ${CONTAINER_NAME}-nginx
-    image: nginx:1.15.12-alpine
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
     restart: unless-stopped
     env_file: .env
+    environment:
+      HOSTNAME: ${HOSTNAME}
     ports:
-      - "8080:80"
+      - "80:80"
+      - "443:443"
     volumes:
-      - ./nginx:/etc/nginx/conf.d:rw
       - wordpress:/var/www/html
     networks:
       - internal
